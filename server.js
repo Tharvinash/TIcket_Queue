@@ -1,18 +1,20 @@
 const express = require('express');
-// const connectDB = require('./config/db');
+const connectDB = require('./config/db');
 // const path = require('path');
 
 const app = express();
 
 // Connect Database
-// connectDB();
+connectDB();
 
 // Init Middleware
-// app.use(express.json());
+app.use(express.json());
 
 // Define Routes
-app.get('/', (req,res)=> res.send('API Running'));
-
+app.get('/', (req, res) => res.send('API Running'));
+app.use('/api/counter', require('./routes/api/counter'));
+app.use('/api/queue', require('./routes/api/queue'));
+app.use('/api/status', require('./routes/api/status'));
 
 // Serve static assets in production
 // if (process.env.NODE_ENV === 'production') {
