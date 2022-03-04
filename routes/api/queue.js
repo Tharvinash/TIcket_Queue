@@ -75,9 +75,11 @@ router.post('/currentnumber', async (req, res) => {
       { _id: counterId },
       {
         currentNumber: LatestNumber,
+        servingStatus: 2,
       },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
+
     res.json(counter);
     // console.log({ LatestNumber, RemovedNumberID });
     NowServing(RemovedNumberID, LatestNumber);
@@ -95,11 +97,9 @@ const NowServing = async (RemovedNumberID, LatestNumber) => {
 
     const status = await Status.find();
     if (status.length > 0) {
-      let finalStatus = await Status.updateOne(
-        {
-          nowServing: LatestNumber,
-        }
-      );
+      let finalStatus = await Status.updateOne({
+        nowServing: LatestNumber,
+      });
     } else {
       let status;
       status = new Status({
