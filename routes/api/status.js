@@ -4,7 +4,7 @@ const router = express.Router();
 const Status = require('../../models/Status'); //modal scheme
 
 // @route    GET api/status
-// @desc     Get status of number
+// @desc     Get number status 
 // @access   Public
 
 router.get('/', async (req, res) => {
