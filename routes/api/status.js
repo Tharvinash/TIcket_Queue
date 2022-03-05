@@ -9,8 +9,9 @@ const Status = require('../../models/Status'); //modal scheme
 
 router.get('/', async (req, res) => {
   try {
-    const status = await Status.find();
-    res.json(status);
+    let status = await Status.find();
+    let latestStatus = status[0]
+    res.json(latestStatus);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

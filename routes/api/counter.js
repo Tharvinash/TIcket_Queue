@@ -43,9 +43,9 @@ router.get('/', async (req, res) => {
 // @desc     Set Counter Out Of Service
 // @access   Public
 
-router.post('/counterstatus', async (req, res) => {
+router.post('/counterstatus/:counterId', async (req, res) => {
   try {
-    const { counterId } = req.body;
+    let counterId = req.params.counterId
     let status = 0;
     let counter = await Counter.findById(counterId);
 
@@ -62,7 +62,9 @@ router.post('/counterstatus', async (req, res) => {
       },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
-    res.json(counter1);
+
+    const countersV2 = await Counter.find();
+    res.json(countersV2);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -73,16 +75,14 @@ router.post('/counterstatus', async (req, res) => {
 // @desc     Complete Current
 // @access   Public
 
-router.post('/completecurrent', async (req, res) => {
+router.post('/completecurrent/:counterId', async (req, res) => {
   try {
-    const { counterId } = req.body;
-
+    let counterId = req.params.counterId
     let counter = await Counter.findById(counterId);
     let status = 1;
     if (counter.servingStatus === 2) {
       status =1;
     }
-    console.log("counter.servingStatus "+counter.servingStatus)
     let counter1 = await Counter.findOneAndUpdate(
       { _id: counterId },
       {
@@ -90,8 +90,8 @@ router.post('/completecurrent', async (req, res) => {
       },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
-
-    res.json(counter1);
+    const countersV2 = await Counter.find();
+    res.json(countersV2);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
