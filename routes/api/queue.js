@@ -63,9 +63,9 @@ const UpdateLastNumber = async (NewNumber) => {
 // @desc     Udate latest number in now serving in Counter
 // @access   Public
 
-router.post('/currentnumber', async (req, res) => {
+router.post('/currentnumber/:counterId', async (req, res) => {
   try {
-    const { counterId } = req.body;
+    let counterId = req.params.counterId
     const numbers = await Queue.find().sort({ timeReleased: -1 });
     let numberObject = numbers.pop();
     let LatestNumber = numberObject.number;
