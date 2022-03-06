@@ -12,18 +12,26 @@ const Status = require('../../models/Status'); //modal scheme
 router.post('/', async (req, res) => {
   try {
     const numbers = await Queue.find().sort('timeReleased');
-    let LatestNumber = numbers.pop().number;
-    let NewNumber = LatestNumber + 1;
-    let queue;
+    if (numbers.length === 0) {
+      let queue;
+      queue = new Queue({
+        number: 1000,
+      });
+      await queue.save();
+      res.json(queue);
+      UpdateLastNumber(1000);
+    } else {
+      let LatestNumber = numbers.pop().number;
+      let NewNumber = LatestNumber + 1;
+      let queue;
 
-    queue = new Queue({
-      number: NewNumber,
-    });
-
-    await queue.save();
-    
-    res.json(queue);
-    UpdateLastNumber(NewNumber);
+      queue = new Queue({
+        number: NewNumber,
+      });
+      await queue.save();
+      res.json(queue);
+      UpdateLastNumber(NewNumber);
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -66,24 +74,26 @@ const UpdateLastNumber = async (NewNumber) => {
 
 router.post('/currentnumber/:counterId', async (req, res) => {
   try {
-    let counterId = req.params.counterId
+    let counterId = req.params.counterId;
+
     const numbers = await Queue.find().sort({ timeReleased: -1 });
-    let numberObject = numbers.pop();
-    let LatestNumber = numberObject.number;
-    let RemovedNumberID = numberObject._id;
-
-    let counter = await Counter.findOneAndUpdate(
-      { _id: counterId },
-      {
-        currentNumber: LatestNumber,
-        servingStatus: 2,
-      },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
-
-    res.json(counter);
-    // console.log({ LatestNumber, RemovedNumberID });
-    NowServing(RemovedNumberID, LatestNumber);
+    if (numbers.length === 0) {
+      res.json([]);
+    } else {
+      let numberObject = numbers.pop();
+      let LatestNumber = numberObject.number;
+      let RemovedNumberID = numberObject._id;
+      let counter = await Counter.findOneAndUpdate(
+        { _id: counterId },
+        {
+          currentNumber: LatestNumber,
+          servingStatus: 2,
+        },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
+      res.json(counter);
+      NowServing(RemovedNumberID, LatestNumber);
+    }
   } catch (err) {
     console.error(err.message);
   }
