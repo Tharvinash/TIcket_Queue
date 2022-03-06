@@ -5,8 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-//component
-import Connect from './Connect';
+
 //redux
 import { connect } from 'react-redux';
 import { getStatus } from './../../actions/status';
@@ -47,12 +46,12 @@ const Customer = (props) => {
             <CardContent className='inlineCounter2'>
               <Typography variant='h5' component='div'>
                 Now Serving :{' '}
-                <text style={{ fontWeight: '600' }}>{status.nowServing}</text>
+                <a style={{color:'#000', fontWeight: '600' }}>{status.nowServing}</a>
               </Typography>
               <div>
                 <Typography variant='h5' component='div'>
                   Last Number :{' '}
-                  <text style={{ fontWeight: '600' }}>{status.lastNumber}</text>
+                  <a style={{color:'#000', fontWeight: '600' }}>{status.lastNumber}</a>
                 </Typography>
               </div>
               <Stack spacing={2}>

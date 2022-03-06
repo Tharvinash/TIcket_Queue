@@ -14,7 +14,7 @@ function queueReducer(state = initialState, action) {
         ...state,
         currentQueue: payload,
       };
-      case GET_NUMBER:
+      case CALL_NEXT:
         return {
           ...state,
           callNext: payload,

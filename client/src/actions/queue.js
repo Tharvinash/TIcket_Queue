@@ -4,7 +4,6 @@ import { GET_NUMBER, CALL_NEXT } from './types';
 export const getNumber = () => async (dispatch) => {
   try {
     const res = await axios.post('/api/queue');
-    console.log('Executed');
     dispatch({
       type: GET_NUMBER,
       payload: res.data,
