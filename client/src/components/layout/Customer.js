@@ -1,39 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+//component
+import Connect from './Connect';
 //redux
-import { useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
 import { getStatus } from './../../actions/status';
 import { getNumber } from '../../actions/queue';
 import { getCounter } from './../../actions/counter';
 
-const bull = (
-  <Box
-    component='span'
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
 
 const Customer = (props) => {
-  const dispatch = useDispatch();
+  const [value, setValue] = useState(0); // integer state
+  const status = props.status.status;
   const counter = props.counter.counter;
 
   const generateNewNumber = async () => {
     props.getNumber();
     props.getStatus();
+    UseForceUpdate();
   };
 
+  function UseForceUpdate() {
+    setValue((value) => value + 1); // update the state to force render
+  }
+
   useEffect(() => {
+    console.log('UseEffect');
     props.getStatus();
     props.getCounter();
-  }, [getStatus]);
+    props.getStatus();
+  }, [value]);
 
   return props.loading || props.loading2 ? (
     <div />
@@ -43,13 +44,15 @@ const Customer = (props) => {
       <div className='centerDiv2'>
         <div className='inlineCounter'>
           <Card>
-            <CardContent>
+            <CardContent className='inlineCounter2'>
               <Typography variant='h5' component='div'>
-                Now Serving : {props.status.status.nowServing}
+                Now Serving :{' '}
+                <text style={{ fontWeight: '600' }}>{status.nowServing}</text>
               </Typography>
               <div>
                 <Typography variant='h5' component='div'>
-                  Last Number: {props.status.status.lastNumber}
+                  Last Number :{' '}
+                  <text style={{ fontWeight: '600' }}>{status.lastNumber}</text>
                 </Typography>
               </div>
               <Stack spacing={2}>
@@ -75,48 +78,44 @@ const Customer = (props) => {
                       {item.currentNumber}
                     </Typography>
                   </div>
-
-                  {item.servingStatus !== 2 && item.servingStatus !== 3 ? (
-                    <div style={{ backgroundColor: 'yellowgreen' }}>
-                      <Typography variant='h6' component='div'>
-                        {item.servingStatus}
-                      </Typography>
-                    </div>
-                  ) : (
-                    <div style={{ backgroundColor: 'red' }}>
-                      <Typography variant='h6' component='div'>
-                        {item.servingStatus}
-                      </Typography>
-                    </div>
-                  )}
+                  <div>
+                    <Typography variant='h6' component='div' fontWeight={600}>
+                      Counter Offline
+                    </Typography>
+                  </div>
                 </CardContent>
               </Card>
             ) : (
               <Card>
-                <CardContent>
-                  <Typography variant='h5' component='div'>
-                    Counter {item.counterId}
-                  </Typography>
-                  <div>
-                    <Typography variant='h6' component='div'>
-                      {item.currentNumber}
+                {item.servingStatus !== 2 && item.servingStatus !== 3 ? (
+                  <CardContent className='inlineCounter2'>
+                    <span className='dotGreen'></span>
+                    <Typography variant='h5' component='div'>
+                      Counter {item.counterId}
                     </Typography>
-                  </div>
 
-                  {item.servingStatus !== 2 && item.servingStatus !== 3 ? (
-                    <div style={{ backgroundColor: 'yellowgreen' }}>
-                      <Typography variant='h6' component='div'>
-                        {item.servingStatus}
+                    <div>
+                      <Typography>Serving Number :</Typography>
+                      <Typography variant='h6' component='div' fontWeight={600}>
+                        {item.currentNumber}
                       </Typography>
                     </div>
-                  ) : (
-                    <div style={{ backgroundColor: 'red' }}>
-                      <Typography variant='h6' component='div'>
-                        {item.servingStatus}
+                  </CardContent>
+                ) : (
+                  <CardContent className='inlineCounter2'>
+                    <span className='dotRed'></span>
+                    <Typography variant='h5' component='div'>
+                      Counter {item.counterId}
+                    </Typography>
+
+                    <div>
+                      <Typography>Serving Number :</Typography>
+                      <Typography variant='h6' component='div' fontWeight={600}>
+                        {item.currentNumber}
                       </Typography>
                     </div>
-                  )}
-                </CardContent>
+                  </CardContent>
+                )}
               </Card>
             )}
           </div>

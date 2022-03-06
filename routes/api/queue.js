@@ -21,6 +21,7 @@ router.post('/', async (req, res) => {
     });
 
     await queue.save();
+    
     res.json(queue);
     UpdateLastNumber(NewNumber);
   } catch (err) {
