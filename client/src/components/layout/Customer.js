@@ -73,10 +73,11 @@ const Customer = (props) => {
                     Counter {item.counterId}
                   </Typography>
                   <div>
-                    <Typography variant='h6' component='div'>
-                      {item.currentNumber}
-                    </Typography>
-                  </div>
+                      <Typography>Serving Number :</Typography>
+                      <Typography variant='h6' component='div' fontWeight={600}>
+                        {item.currentNumber}
+                      </Typography>
+                    </div>
                   <div>
                     <Typography variant='h6' component='div' fontWeight={600}>
                       Counter Offline
