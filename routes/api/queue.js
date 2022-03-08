@@ -38,10 +38,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route    POST api/queue/status
-// @desc     Udate latest number in status
-// @access   Public
-
+// @desc     Udate latest number in status db
 const UpdateLastNumber = async (NewNumber) => {
   // router.post('/', async (req, res) => {
   try {
@@ -69,7 +66,7 @@ const UpdateLastNumber = async (NewNumber) => {
 };
 
 // @route    POST api/queue/status
-// @desc     Udate latest number in now serving in Counter
+// @desc     Remove latest number from queue and update in status db
 // @access   Public
 
 router.post('/currentnumber/:counterId', async (req, res) => {

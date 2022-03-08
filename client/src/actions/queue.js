@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { GET_NUMBER, CALL_NEXT } from './types';
 
+//generate number for customer
 export const getNumber = () => async (dispatch) => {
   try {
     const res = await axios.post('/api/queue');
@@ -17,6 +18,7 @@ export const getNumber = () => async (dispatch) => {
   }
 };
 
+//call next number from queue [third button in counter]
 export const callNext = (counterId) => async (dispatch) => {
   try {
     const res = await axios.post(`/api/queue/currentnumber/${counterId}`);

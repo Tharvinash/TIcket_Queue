@@ -4,7 +4,7 @@ const router = express.Router();
 const Counter = require('../../models/Counter'); //modal scheme
 
 // @route    POST api/counter
-// @desc     Register Counter
+// @desc     Register Counter manually
 // @access   Public
 
 router.post('/', async (req, res) => {
@@ -72,7 +72,7 @@ router.post('/counterstatus/:counterId', async (req, res) => {
 });
 
 // @route    POST api/counter/completecurrent
-// @desc     Complete Current
+// @desc     Complete Current and make counter status to available
 // @access   Public
 
 router.post('/completecurrent/:counterId', async (req, res) => {
